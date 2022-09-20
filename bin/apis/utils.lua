@@ -2,7 +2,11 @@ local utils = {}
 
 utils.downloadFromURL = function (url, path)
     local data = http.get({url=url, binary=true});
-    local file = fs.open(path, "wb");
+    local file, reason = fs.open(path, "wb");
+    if file == nil then
+        print(reason)
+        return
+    end
     file.write(data.readAll())
     file.close()
 end
@@ -22,6 +26,12 @@ utils.writeToFile = function (path, content)
     local file = fs.open(path, "w");
     file.write(content)
     file.close()
+end
+
+utils.downloadFromGithub = function (owner, repo, branch, path)
+    if branch == nil then branch = "main" end
+    local url = formURL("https://raw.githubusercontent.com", owner, repo, branch, path)
+    downloadFromURL(url)
 end
 
 return utils

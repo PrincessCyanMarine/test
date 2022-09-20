@@ -1,3 +1,4 @@
+fs.delete("install.lua")
 local baseURL = "https://api.github.com"
 
 function downloadFromURL(url, path)
@@ -13,9 +14,21 @@ function formURL(...)
     return url:gsub(" ", "%%20")
 end
 
+function downloadFromGithub(owner, repo, branch, path)
+    if branch == nil then branch = "main" end
+    local url = formURL("https://raw.githubusercontent.com", owner, repo, branch, path)
+    downloadFromURL(url)
+end
+
 function getRepoContent(owner, repo, path)
-    local url = formURL(baseURL, "repos", owner, repo, "contents");
-    local data = textutils.unserialiseJSON(http.get(url).readAll())
+    local url = utils.formURL(baseURL, "repos", owner, repo, "contents");
+    if path ~= nil then url = utils.formURL(url, path) end
+    local res = http.get(url);
+    if res == nil then print("Couldn't get repo content"); return nil; end
+    local code, text = res.getResponseCode()
+    if code ~= 200 then print("ERROR: "..code); print(text); return nil; end
+    local data_text  = res.readAll()
+    local data = textutils.unserialiseJSON(data_text)
     res.close();
     return data;
 end
@@ -40,4 +53,7 @@ function downloadRepo(owner, repo, path, downloadTo)
     end
 end
 
-downloadRepo("PrincessCyanMarine", "test", "src", ".")
+downloadRepo("PrincessCyanMarine", "test", "bin", ".")
+downloadFromGithub("PrincessCyanMarine", "test", "main", "startup.lua")
+
+os.reboot()
