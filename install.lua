@@ -24,8 +24,8 @@ function downloadFromGithub(owner, repo, branch, path)
 end
 
 function getRepoContent(owner, repo, path)
-    local url = utils.formURL(baseURL, "repos", owner, repo, "contents");
-    if path ~= nil then url = utils.formURL(url, path) end
+    local url = formURL(baseURL, "repos", owner, repo, "contents");
+    if path ~= nil then url = formURL(url, path) end
     local res = http.get(url);
     if res == nil then print("Couldn't get repo content"); return nil; end
     local code, text = res.getResponseCode()
