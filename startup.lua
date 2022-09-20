@@ -7,6 +7,6 @@ _G.utils = require("/bin/apis/utils")
 local latestVersion = http.get("https://raw.githubusercontent.com/PrincessCyanMarine/test/main/version").readAll()
 
 if version ~= latestVersion then
-    utils.downloadFromURL("https://raw.githubusercontent.com/PrincessCyanMarine/test/main/install.lua", "install.lua")
+    utils.downloadFromGithub("PrincessCyanMarine", "test", "main", "install.lua")
     os.run({}, "install.lua")
 end
