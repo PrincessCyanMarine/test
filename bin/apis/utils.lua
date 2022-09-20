@@ -2,6 +2,7 @@ local utils = {}
 
 utils.downloadFromURL = function (url, path)
     local data = http.get({url=url, binary=true});
+    if path == nil then error("No path given to download URL "..url, 1) end
     local file, reason = fs.open(path, "wb");
     if file == nil then
         print(reason)

@@ -4,7 +4,7 @@ local baseURL = "https://api.github.com"
 function downloadFromURL(url, path)
     local data = http.get({url=url, binary=true});
     if path == nil then
-        error("No path given to donwload URL "..url, 1)
+        error("No path given to download URL "..url, 1)
     end
     local file = fs.open(path, "wb");
     file.write(data.readAll())
