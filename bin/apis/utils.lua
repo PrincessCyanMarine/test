@@ -31,8 +31,8 @@ end
 
 utils.downloadFromGithub = function (owner, repo, branch, path)
     if branch == nil then branch = "main" end
-    local url = formURL("https://raw.githubusercontent.com", owner, repo, branch, path)
-    downloadFromURL(url, path)
+    local url = utils.formURL("https://raw.githubusercontent.com", owner, repo, branch, path)
+    utils.downloadFromURL(url, path)
 end
 
 return utils
